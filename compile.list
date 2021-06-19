@@ -1,0 +1,17 @@
+-encoding utf8
+
+./Sources/Controleur.java
+
+./Sources/ihm/FrameJoueur/FrameJoueur.java
+./Sources/ihm/FrameJoueur/PanelHead.java
+./Sources/ihm/FrameJoueur/PanelBody.java
+
+./Sources/ihm/FrameMenu/FrameMenu.java
+
+./Sources/ihm/FramePlateau/FramePlateau.java
+./Sources/ihm/FramePlateau/PanelSysteme.java
+
+./Sources/Metier/Joueur.java
+./Sources/Metier/Metier.java
+./Sources/Metier/Planete.java
+./Sources/Metier/SystemeSolaire.java
