@@ -198,5 +198,5 @@ public class Metier
 	*/
 	public Joueur getOneJoueur(int sNomJ)  { return this.alJoueur.get(sNomJ);}
 
-	public void fermerMetier() {this.alJoueur.clear(); this.alSysteme.clear();}
+	public void fermerMetier() {this.alJoueur.get(0).setRenitialise();this.alJoueur.clear(); this.alSysteme.clear();}
 }

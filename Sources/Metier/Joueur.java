@@ -33,4 +33,6 @@ public class Joueur
 	*    @param sNomJoueur Nom du joueur
 	*/
 	public void setNewNom(String sNomJoueur){this.sNomJoueur =sNomJoueur; }
+
+	public void setRenitialise(){this.iNbJoueur =0; }
 }

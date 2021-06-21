@@ -96,7 +96,6 @@ public class Controleur
         this.ihmJoueur[0].fermeFrameJoueur();
         this.ihmJoueur[1].fermeFrameJoueur();
       }
-      this.ihmMenu.ouvreFrameMenu();
       this.ihmMenu          = new FrameMenu(this);
       this.metier           = new Metier(iScenario);
       this.ihmPlateau.maj();

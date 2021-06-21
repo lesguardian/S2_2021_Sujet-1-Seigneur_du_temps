@@ -36,6 +36,9 @@ public class FrameMenu extends JFrame implements ActionListener
   private JButton 	btnValider	;
   private JButton		btnQuitter	;
   private JRadioButton[]    rbModeJeu  ;
+  private JLabel lblModeDeJeu;
+  private JPanel panelEntete;
+  private Clip        clip ;
 
 
   private JTextField[]	txtJoueur	;
@@ -49,18 +52,17 @@ public class FrameMenu extends JFrame implements ActionListener
 		this.setTitle    ( "Menu Principale" )	;
 		this.setLocation ( 10, 10 )		;
 		this.ctrl = ctrl			;
-
-    this.setLayout(new GridLayout(4,0));
-
+    this.setLayout(new BorderLayout());
 
 		/* - -  - - - - - */
 		/* Variable Local */
 		/* - - - - - - -- */
 
 		ImageIcon	icnSeigneur;
-		JPanel		panelEntete, panelTxt, panelModeJeu, panelChoixFinal	;
+		JPanel		 panelBas, panelModeJeu, panelChoixFinal, panelSaisie	;
 		JLabel		lblMenu, lblConsigne, lblSeigneur			;
-		JLabel[]	lblJoueur						;
+		JLabel[]	lblJoueur 					;
+    JLabel	lblModeDeJeu					;
     ButtonGroup grpTheme;
 
 		/* - - - - - - - - - - - - - */
@@ -69,21 +71,26 @@ public class FrameMenu extends JFrame implements ActionListener
 
 		// locale :
 
-		panelEntete     = new JPanel();
-		panelTxt        = new JPanel();
+		this.panelEntete= new JPanel();
 		panelModeJeu    = new JPanel();
 		panelChoixFinal = new JPanel();
+    panelBas        = new JPanel();
+    panelSaisie     = new JPanel();
 
-		panelEntete    .setLayout(new GridLayout(3,0));
-		panelTxt       .setLayout(new GridLayout(8,0));
-		panelModeJeu   .setLayout(new FlowLayout())	;
-		panelChoixFinal.setLayout(new FlowLayout())	;
+		panelEntete    .setLayout(new FlowLayout());
+		panelModeJeu   .setLayout(new FlowLayout());
+		panelChoixFinal.setLayout(new FlowLayout());
+    panelSaisie       .setLayout(new GridLayout(8,0));
+
+    panelBas.setLayout(new BorderLayout());
 
 		lblMenu     = new JLabel("Menu" , JLabel.CENTER)				;
 		lblConsigne = new JLabel("Veuillez entrer le pseudonyme des deux joueurs")	;
 		lblJoueur   = new JLabel[2]							;
 		lblSeigneur  = new JLabel()							;
     grpTheme 			= new ButtonGroup();
+
+    this.lblModeDeJeu = new JLabel(new ImageIcon(new ImageIcon ("Images/Default/Menu/Menu.png").getImage().getScaledInstance(200, 200, Image.SCALE_DEFAULT)));
 
     icnSeigneur	= new ImageIcon("Images/- Icon/Menu.png");
     lblSeigneur		= new JLabel();
@@ -94,7 +101,7 @@ public class FrameMenu extends JFrame implements ActionListener
 
 		this.btnValider = new JButton("Valider");
 		this.btnQuitter = new JButton("Quitter");
-    this.rbModeJeu = new JRadioButton[2];
+    this.rbModeJeu = new JRadioButton[4];
 
 
 		this.txtJoueur  = new JTextField[2];
@@ -106,22 +113,24 @@ public class FrameMenu extends JFrame implements ActionListener
 			int a = cpt +1;
 			this.txtJoueur[cpt]	= new JTextField();
 			lblJoueur[cpt]		= new JLabel("Joueur " + a + " :");
-
-			panelTxt.add(lblJoueur[cpt]);
-			panelTxt.add(this.txtJoueur[cpt]);
+      panelSaisie.add(lblJoueur[cpt]);
+      panelSaisie.add(this.txtJoueur[cpt]);
 		}
 
     this.rbModeJeu[0] = new JRadioButton("Default");
 		this.rbModeJeu[1] = new JRadioButton("Theme01");
+    this.rbModeJeu[2] = new JRadioButton("Theme02");
+    this.rbModeJeu[3] = new JRadioButton("Theme03");
+
+    this.rbModeJeu[0].setSelected(true);
+
 		/* - - - - - - - - - - - - - - - */
 		/* positionnement des composants */
 		/* - - - - - - - - - - - - - - - */
 
 		// panel locale :
 
-    panelEntete.add(lblSeigneur);
-    panelEntete.add(lblMenu);
-    panelEntete.add(lblConsigne);
+
 
     panelModeJeu.add(new JLabel("Theme de Jeu :"));
     for(int i = 0; i < this.rbModeJeu.length ; i++)
@@ -133,13 +142,19 @@ public class FrameMenu extends JFrame implements ActionListener
     panelChoixFinal.add(this.btnValider);
     panelChoixFinal.add(this.btnQuitter);
 
+    panelBas.add(panelChoixFinal, BorderLayout.SOUTH);
+    panelBas.add(panelModeJeu, BorderLayout.NORTH);
+
 
 		// panel Privée :
 
-		this.add(panelEntete    );
-		this.add(panelTxt       );
-    this.add(panelModeJeu);
-		this.add(panelChoixFinal);
+    this.panelEntete.add(this.lblModeDeJeu);
+
+
+		this.add(this.panelEntete, BorderLayout.NORTH);
+    this.add(panelSaisie, BorderLayout.CENTER);
+    this.add(panelBas, BorderLayout.SOUTH);
+
 
 
 		/* - - - - - - - - - - - - - */
@@ -161,6 +176,10 @@ public class FrameMenu extends JFrame implements ActionListener
 		this.btnQuitter.addActionListener(this);
 
 
+    for(int cpt = 0; cpt < this.rbModeJeu.length; cpt++)
+    {
+      this.rbModeJeu[cpt].addActionListener(this);
+    }
 
 
 		/* - - - - - - - - - - - - - */
@@ -193,13 +212,27 @@ public class FrameMenu extends JFrame implements ActionListener
           JOptionPane.showMessageDialog(this ,"Veuillez entrer le pseudonyme des deux joueurs." );
         else
         {
+          arretMusic();
           this.setVisible(false);
           this.ctrl.setJoueur(this.txtJoueur[0].getText(), this.txtJoueur[1].getText());
-          if(this.rbModeJeu[0].isSelected()){ this.ctrl.setModeDeJeu(this.rbModeJeu[0].getText()); }
-          if(this.rbModeJeu[1].isSelected()){ this.ctrl.setModeDeJeu(this.rbModeJeu[1].getText());}
+          this.ctrl.setModeDeJeu(getsModeJeu());
           this.ctrl.ouvrir()	;
         }
       }
+    }
+
+    if (e.getSource() instanceof JRadioButton)
+    {
+      arretMusic();
+      JRadioButton rbTemp = (JRadioButton) e.getSource();
+      if(rbTemp.getText().equals("Default")){this.lblModeDeJeu = new JLabel(new ImageIcon(new ImageIcon ("Images/"+rbTemp.getText()+"/Menu/Menu.png").getImage().getScaledInstance(200, 200, Image.SCALE_DEFAULT))); }
+      else{this.lblModeDeJeu = new JLabel(new ImageIcon(new ImageIcon ("Images/"+rbTemp.getText()+"/Menu/Menu.gif").getImage().getScaledInstance(200, 200, Image.SCALE_DEFAULT))); play();}
+      this.panelEntete.removeAll();
+      this.panelEntete.add(this.lblModeDeJeu);
+
+      this.panelEntete.validate();
+      this.panelEntete.repaint();
+      this.repaint();
     }
   }
 
@@ -216,4 +249,50 @@ public class FrameMenu extends JFrame implements ActionListener
     }
     return true;
   }
+
+  public String getsModeJeu()
+  {
+    for (int cptLig = 0; cptLig < this.rbModeJeu.length; cptLig++)
+    {
+      if (this.rbModeJeu[cptLig].isSelected()) { return this.rbModeJeu[cptLig].getText();}
+    }
+    return "";
+  }
+
+
+
+  // recupere les fichier audio
+
+   public	void playMusic() throws UnsupportedAudioFileException, IOException, LineUnavailableException
+   {
+     File file = new File("Images/"+getsModeJeu()+"/Music/Menu.wav");
+     AudioInputStream audioStream =	AudioSystem.getAudioInputStream(file);
+     this.clip = AudioSystem.getClip();
+     this.clip.open(audioStream);
+     this.clip.start();
+   }
+
+   public	void play()
+   {
+     try {
+           playMusic();
+
+         } catch (UnsupportedAudioFileException | IOException
+         | LineUnavailableException e) {
+      e.printStackTrace();
+     }
+   }
+
+   public	void stop()
+   {
+     this.clip.stop();
+   }
+
+   public	void arretMusic()
+   {
+     if(this.clip  != null && this.clip.isRunning()) { stop();}
+   }
+
+
+ // joue le fichier Audio
 }
