@@ -148,87 +148,10 @@ public class FrameMenu extends JFrame implements ActionListener
 
 		// panel Privée :
 
-    this.panelEntete.add(this.lblModeDeJeu);
 
-
-		this.add(this.panelEntete, BorderLayout.NORTH);
-    this.add(panelSaisie, BorderLayout.CENTER);
-    this.add(panelBas, BorderLayout.SOUTH);
-
-
-
-		/* - - - - - - - - - - - - - */
-		/* Activation des composants */
-		/* - - - - - - - - - - - - - */
-
-		this.addWindowListener
-		(
-			new WindowAdapter()
-			{
-				public void windowClosing(WindowEvent evt)
-				{
-					System.exit(0);
-				}
-			}
-		);
-
-		this.btnValider.addActionListener(this);
-		this.btnQuitter.addActionListener(this);
-
-
-    for(int cpt = 0; cpt < this.rbModeJeu.length; cpt++)
-    {
-      this.rbModeJeu[cpt].addActionListener(this);
-    }
-
-
-		/* - - - - - - - - - - - - - */
-		/*   Finalisation du frame   */
-		/* - - - - - - - - - - - - - */
-
-		this.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE )	;
-		this.setPreferredSize(new Dimension(600, 600))		;
-		this.setSize(530, 500)					;
-		this.setLocationRelativeTo(null)			;
-		this.setVisible ( true )				;
-		this.pack()						;
-  }
-
-
-  // Lance le Jeu ou quitte l'aplication
-
-  public void actionPerformed(ActionEvent e)
-  {
-    if (e.getSource() instanceof JButton)
-    {
-      if (e.getSource() == this.btnQuitter )
-      {
-        System.exit(0);
-      }
 
       if (e.getSource() == this.btnValider )
       {
-        if(!getsNomJoueur())
-          JOptionPane.showMessageDialog(this ,"Veuillez entrer le pseudonyme des deux joueurs." );
-        else
-        {
-          arretMusic();
-          this.setVisible(false);
-          this.ctrl.setJoueur(this.txtJoueur[0].getText(), this.txtJoueur[1].getText());
-          this.ctrl.setModeDeJeu(getsModeJeu());
-          this.ctrl.ouvrir()	;
-        }
-      }
-    }
-
-    if (e.getSource() instanceof JRadioButton)
-    {
-      arretMusic();
-      JRadioButton rbTemp = (JRadioButton) e.getSource();
-      if(rbTemp.getText().equals("Default")){this.lblModeDeJeu = new JLabel(new ImageIcon(new ImageIcon ("Images/"+rbTemp.getText()+"/Menu/Menu.png").getImage().getScaledInstance(200, 200, Image.SCALE_DEFAULT))); }
-      else{this.lblModeDeJeu = new JLabel(new ImageIcon(new ImageIcon ("Images/"+rbTemp.getText()+"/Menu/Menu.gif").getImage().getScaledInstance(200, 200, Image.SCALE_DEFAULT))); play();}
-      this.panelEntete.removeAll();
-      this.panelEntete.add(this.lblModeDeJeu);
 
       this.panelEntete.validate();
       this.panelEntete.repaint();
