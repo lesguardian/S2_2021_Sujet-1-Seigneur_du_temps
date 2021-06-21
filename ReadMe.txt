@@ -7,7 +7,7 @@
 javac @compile.list -d ./ 
 
 // pour exÈcuter
-java SeigneurDuTemps.Source.Controleur
+java equipe_32.Sources.Controleur
 
 // vous devez avoir dans le repertoire courant (pour vous lancer l'execution)
 // le dossier images
